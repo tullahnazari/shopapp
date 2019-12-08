@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopapp/providers/cart.dart';
 import 'package:shopapp/providers/products.dart';
+import 'package:shopapp/widgets/badge.dart';
 import 'package:shopapp/widgets/product_grid.dart';
 //adding enum for selection
 enum FilterOptions {
@@ -46,6 +48,21 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 PopupMenuItem(
                   child: Text('Show All'), value: FilterOptions.All),
             ],
+          ),
+          //added consumer because only this widget should rebuild not even how icon looks, just the count
+          Consumer<Cart>(
+            builder: (_, cart, ch) => Badge(
+              child: ch,
+              value: cart.itemCount.toString(),
+            ),
+            child: IconButton(
+                icon: Icon(
+                  Icons.shopping_cart,
+                ),
+                onPressed: () {
+                  
+                },
+              ),
           ),
             ],
       ),
