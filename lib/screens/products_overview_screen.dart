@@ -26,7 +26,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         title: Text('My Shop'),
         //adding vertical elipsis menu
         actions: <Widget>[
-          PopupMenuButton(
+          PopupMenuButton(  
             onSelected: (FilterOptions selectedValue) {
               setState(() {
                 
