@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import 'package:shopapp/providers/product.dart';
+
 
 
 //mixin: extending another class, merge properties or methods into class 
