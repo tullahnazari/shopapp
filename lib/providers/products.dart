@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import 'package:shopapp/providers/product.dart';
+
 
 
 //mixin: extending another class, merge properties or methods into class 
@@ -39,6 +40,9 @@ class Products with ChangeNotifier{
     ),
   ];
 
+  //
+  // var _showFavoritesOnly = false;
+
 
 
   //MAKING IT SO ONLY DATA INSIDE HERE IS CHANGED FOR PRODUCT DATA  
@@ -46,10 +50,16 @@ class Products with ChangeNotifier{
     return [..._items];
   }
 
+  //show only favorited list
+  List<Product> get favoriteItems {
+    return _items.where((prodItem) => prodItem.isFavorite).toList();
+  }
+
   Product findById(String id) {
     return _items.firstWhere((
       prod) => prod.id == id);
   }
+
 
 
   void addProduct() {
