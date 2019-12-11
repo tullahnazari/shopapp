@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopapp/providers/cart.dart';
 import 'package:shopapp/providers/products.dart';
 import 'package:shopapp/screens/cart_screen.dart';
+import 'package:shopapp/widgets/app_drawer.dart';
 import 'package:shopapp/widgets/badge.dart';
 import 'package:shopapp/widgets/product_grid.dart';
 //adding enum for selection
@@ -67,6 +68,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ),
             ],
       ),
+      drawer: AppDrawer(),
       body: ProductsGrid(_showOnlyFavories),
       
     );
