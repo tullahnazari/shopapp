@@ -65,18 +65,19 @@ class Products with ChangeNotifier{
 
 
 
-  Future<void> addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     //sending http request
     const url = 'https://notetaker-afe0d.firebaseio.com/products.json';
-    return http.post(url, body: json.encode({
+    try {
+    final response = await http.post(url, body: json.encode({
       'title': product.title,
       'description': product.description,
       'imageUrl': product.imageUrl,
       'price': product.price,
       'isFavorite': product.isFavorite,
-    }),).then((response) {
-      //print(json.decode(response.body));
-      final newProduct = Product(
+    }),
+    );
+    final newProduct = Product(
       title: product.title, 
       description: product.description,
       price: product.price,
@@ -85,13 +86,14 @@ class Products with ChangeNotifier{
     );
     _items.add(newProduct);
     notifyListeners();
-      
-    }).catchError((error) {
+    } catch (error) {
       print(error);
       throw error;
-    });
-    
-  }
+    }
+      //print(json.decode(response.body));
+      
+      
+    }
 
 
   void updateProduct(String id, Product newProduct) {
