@@ -30,6 +30,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   };
 
   var _isInIt = true;
+  var _isLoading = false;
 
   //focuses on next input on keyboard after you click next
   final _priceFocusNode = FocusNode();
@@ -93,15 +94,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState.save();
+    setState(() {
+      _isLoading = true;
+    });
     if (_editedProduct.id != null) {
       Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id, _editedProduct );
-
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
     } else {
-      
-      Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+      Provider.of<Products>(context, listen: false)
+      .addProduct(_editedProduct).then((_){
+        setState(()  {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
+      });
     }
-    
-    Navigator.of(context).pop();
 
   }
 
@@ -119,7 +129,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
           )
         ],
       ),
-      body: Padding(
+      //adding screen logic to change based on _isLoading property
+      body: _isLoading ? 
+      Center(child: CircularProgressIndicator(), )
+       : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _form,

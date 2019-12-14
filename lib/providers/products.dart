@@ -65,10 +65,10 @@ class Products with ChangeNotifier{
 
 
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     //sending http request
-    final url = 'https://notetaker-afe0d.firebaseio.com/products.json';
-    http.post(url, body: json.encode({
+    const url = 'https://notetaker-afe0d.firebaseio.com/products.json';
+    return http.post(url, body: json.encode({
       'title': product.title,
       'description': product.description,
       'imageUrl': product.imageUrl,
