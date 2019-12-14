@@ -97,6 +97,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id, _editedProduct );
 
     } else {
+      
       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
     }
     
