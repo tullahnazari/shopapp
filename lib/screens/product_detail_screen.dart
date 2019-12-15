@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopapp/providers/cart.dart';
+import 'package:shopapp/providers/product.dart';
 import 'package:shopapp/providers/products.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -11,6 +13,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context, listen: false);
     final productId =
         ModalRoute.of(context).settings.arguments as String; // is the id!
     final loadedProduct = Provider.of<Products>(
@@ -42,6 +45,21 @@ class ProductDetailScreen extends StatelessWidget {
               child: Text(loadedProduct.description, 
               textAlign: TextAlign.center,
               softWrap: true,),
+            ), 
+            SizedBox(height: 10,),
+            Container(
+              child: IconButton(
+            icon: Icon(
+              Icons.shopping_cart,
+            ),
+            onPressed: () {
+              //Forwarding item data to cart screen
+              cart.addItem(loadedProduct.id, loadedProduct.price, loadedProduct.title);
+              
+              //if snackbar is already open
+            },
+            color: Theme.of(context).accentColor,
+          ),
             ),
           ],
         ),
