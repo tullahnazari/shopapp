@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 class Product with ChangeNotifier{
   final String id;
@@ -10,10 +13,30 @@ class Product with ChangeNotifier{
 
   Product({@required this.id, @required this.title, @required this.description, @required this.price, @required this.imageUrl, this.isFavorite = false,});
 
-  void toggleFavoriteStatus() {
-    isFavorite = !isFavorite;
+  void _setFavValue(bool newValue) {
+    isFavorite = newValue;
     notifyListeners();
   }
+  Future<void> toggleFavoriteStatus() async {
+    final oldStatus = isFavorite;
+    isFavorite = !isFavorite;
+    notifyListeners();
+    final url = 'https://notetaker-afe0d.firebaseio.com/products/$id.json';
+    try{
+    final response = await http.patch(url, body: jsonEncode({
+      'isFavorite': isFavorite,
+      
+    }),
+    );
+    if (response.statusCode >= 400) {
+      _setFavValue(oldStatus);
+    }
+    
+  } catch (error) {
+    _setFavValue(oldStatus);
+
+  }
+  } 
 
   
 }
