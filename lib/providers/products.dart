@@ -48,6 +48,11 @@ class Products with ChangeNotifier{
   //
   // var _showFavoritesOnly = false;
 
+  //constructor for builder provider in ChangeNotifierProviderProxy
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
 
 
   //MAKING IT SO ONLY DATA INSIDE HERE IS CHANGED FOR PRODUCT DATA  
@@ -66,14 +71,13 @@ class Products with ChangeNotifier{
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://notetaker-afe0d.firebaseio.com/products.json';
+    final url = 'https://notetaker-afe0d.firebaseio.com/products.json?auth=$authToken';
     try {
       final response = await http.get(url);
-      print(json.decode(response.body));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) {
-      return;
-    }
+        return;
+      }
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
@@ -96,7 +100,7 @@ class Products with ChangeNotifier{
 
   Future<void> addProduct(Product product) async {
     //sending http request
-    const url = 'https://notetaker-afe0d.firebaseio.com/products.json';
+    final url = 'https://notetaker-afe0d.firebaseio.com/products.json?auth=$authToken';
     try {
     final response = await http.post(url, body: json.encode({
       'title': product.title,
@@ -152,10 +156,10 @@ class Products with ChangeNotifier{
     notifyListeners();
     final response = await http.delete(url);
       if (response.statusCode >= 400) {
-        throw HttpException('Can not delete product');
-
-
-      }
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product.');
+    }
       existingProduct = null;
     }
 
