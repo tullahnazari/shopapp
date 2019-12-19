@@ -132,7 +132,7 @@ class Products with ChangeNotifier{
   void updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) { 
-    final url = 'https://notetaker-afe0d.firebaseio.com/products/$id.json';
+    final url = 'https://notetaker-afe0d.firebaseio.com/products/$id.json?auth=$authToken';
     await http.patch(url, body: json.encode({
       'title': newProduct.title,
       'description': newProduct.description,
@@ -148,7 +148,7 @@ class Products with ChangeNotifier{
 
 
   Future<void> deleteProduct(String id) async{
-    final url = 'https://notetaker-afe0d.firebaseio.com/products/$id.json';
+    final url = 'https://notetaker-afe0d.firebaseio.com/products/$id.json?auth=$authToken';
     //optimistic deleting/updating
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
