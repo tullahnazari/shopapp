@@ -24,10 +24,9 @@ class Product with ChangeNotifier{
     //storing favorites in a seperate path
     final url = 'https://notetaker-afe0d.firebaseio.com/userFavorites/$userId/$id.json?auth=$token';
     try{
-    final response = await http.put(url, body: jsonEncode({
+    final response = await http.put(url, body: json.encode(
       isFavorite,
-      
-    }),
+      ),
     );
     if (response.statusCode >= 400) {
       _setFavValue(oldStatus);
