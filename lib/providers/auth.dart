@@ -23,6 +23,10 @@ class Auth with ChangeNotifier {
     return null;
   }
 
+  String get userId {
+    return userId;
+  }
+
 
   //reusable in two endpoints with parameters
   Future<void> _authenticate(
