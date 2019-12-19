@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shopapp/providers/auth.dart';
 import 'package:shopapp/providers/cart.dart';
 import 'package:shopapp/providers/orders.dart';
+import 'package:shopapp/screens/auth-screen.dart';
 import 'package:shopapp/screens/cart_screen.dart';
 import 'package:shopapp/screens/edit_product_screen.dart';
 import 'package:shopapp/screens/product_detail_screen.dart';
@@ -19,38 +21,42 @@ class MyApp extends StatelessWidget {
     //ability to add multiple providers at root of app 
     return MultiProvider(providers: [
       ChangeNotifierProvider.value(
-        value: Products(),
-      ),
+          value: Auth(),
+        ),
+      ChangeNotifierProxyProvider<Auth, Products>(
+          builder: (ctx, auth, previousProducts) => Products(
+                auth.token,
+                previousProducts == null ? [] : previousProducts.items,
+              ),
+        ),
       ChangeNotifierProvider.value(
         value: Cart(),
       ),
-      ChangeNotifierProvider.value(
-        value: Orders(),
-      )
+      ChangeNotifierProxyProvider<Auth, Orders>(
+        builder: (ctx, auth, previousOrders) => Orders(
+          auth.token, previousOrders == null ? [] : previousOrders.orders,
+        ),
+      ),
 
     ],
-        child: MaterialApp(
-        title: 'MySHOP',
-        theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-          accentColor: Colors.deepPurple,
-          fontFamily: 'Lato',
-        ),
-        home: ProductsOverviewScreen(),
-        routes: {
-          ProductDetailScreen.routeName: (context) => 
-          ProductDetailScreen(),
-          //adding cartscreen route
-          CartScreen.routeName: (ctx) => 
-          CartScreen(),
-          OrdersScreen.routeName: (ctx) => 
-          OrdersScreen(),
-          UserProductsScreen.routeName: (ctx) => 
-          UserProductsScreen(),
-          EditProductScreen.routeName: (ctx) => 
-          EditProductScreen(),
-
-        },
+    //adding Auth context for all screens so if auth expires user exits app
+        child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+              title: 'MyShop',
+              theme: ThemeData(
+                primarySwatch: Colors.purple,
+                accentColor: Colors.deepOrange,
+                fontFamily: 'Lato',
+              ),
+              home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
+              routes: {
+                ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+                CartScreen.routeName: (ctx) => CartScreen(),
+                OrdersScreen.routeName: (ctx) => OrdersScreen(),
+                UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
+                EditProductScreen.routeName: (ctx) => EditProductScreen(),
+              },
+            ),
       ),
     );
   }

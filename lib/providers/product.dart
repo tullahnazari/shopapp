@@ -17,11 +17,11 @@ class Product with ChangeNotifier{
     isFavorite = newValue;
     notifyListeners();
   }
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String token) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
-    final url = 'https://notetaker-afe0d.firebaseio.com/products/$id.json';
+    final url = 'https://notetaker-afe0d.firebaseio.com/products/$id.json?auth=$token';
     try{
     final response = await http.patch(url, body: jsonEncode({
       'isFavorite': isFavorite,
