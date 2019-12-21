@@ -1,8 +1,12 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopapp/providers/cart.dart';
 import 'package:shopapp/providers/product.dart';
 import 'package:shopapp/providers/products.dart';
+
+import 'cart_screen.dart';
+import 'orders_screen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   // final String title;
@@ -13,6 +17,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final cart = Provider.of<Cart>(context, listen: false);
     final productId =
         ModalRoute.of(context).settings.arguments as String; // is the id!
@@ -55,15 +60,36 @@ class ProductDetailScreen extends StatelessWidget {
             onPressed: () {
               //Forwarding item data to cart screen
               cart.addItem(loadedProduct.id, loadedProduct.price, loadedProduct.title);
-              
-              //if snackbar is already open
+              Flushbar(
+                  message: "Successfully added ${loadedProduct.title} to Cart",
+                  mainButton: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                  },
+                child: Text(
+                    "Go To Cart",
+                style: TextStyle(color: Theme.of(context).accentColor),
+                  ),
+                    ),
+                  backgroundColor: Theme.of(context).primaryColor,
+
+
+                  icon: Icon(Icons.check, color: Theme.of(context).accentColor,),
+
+                  duration:  Duration(seconds: 3),              
+                )..show(context);
+          
             },
-            color: Theme.of(context).accentColor,
+            color: Colors.deepOrange,
           ),
             ),
           ],
         ),
       ),
     );
+
+    
   }
 }
+
+

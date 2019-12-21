@@ -17,7 +17,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(
               Icons.shop
             ),
-            title: Text('Shop'),
+            title: Text('Shop', style: TextStyle(color: Colors.black),),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
@@ -27,7 +27,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(
               Icons.payment
             ),
-            title: Text('Orders'),
+            title: Text('Orders', style: TextStyle(color: Colors.black),),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
             },
@@ -37,7 +37,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(
               Icons.edit
             ),
-            title: Text('Manage Products'),
+            title: Text('Manage Products', style: TextStyle(color: Colors.black),),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
             },
@@ -47,7 +47,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(
               Icons.exit_to_app
             ),
-            title: Text('Log out'),
+            title: Text('Log out', style: TextStyle(color: Colors.black),),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).pushReplacementNamed('/');
