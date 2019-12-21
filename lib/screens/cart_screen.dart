@@ -1,7 +1,9 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopapp/providers/cart.dart' show Cart;
 import 'package:shopapp/providers/orders.dart';
+import 'package:shopapp/screens/orders_screen.dart';
 import 'package:shopapp/widgets/cart_item.dart';
 
 
@@ -79,6 +81,7 @@ class _OrderButtonState extends State<OrderButton> {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
     return FlatButton(
       child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
       onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
@@ -94,6 +97,38 @@ class _OrderButtonState extends State<OrderButton> {
               setState(() {
                 _isLoading = false;
               });
+              Flushbar(
+                  messageText: Text("Ordered Successfully", style: TextStyle(color: Colors.black),),
+                  mainButton: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                  },
+                child: Text(
+                    "Go To Orders",
+                style: TextStyle(color: Colors.black),
+                  ),
+                    ),
+                  backgroundColor: Theme.of(context).primaryColor,
+
+
+                  icon: Icon(Icons.check, color: Colors.black,),
+
+                  duration:  Duration(seconds: 3),              
+                )..show(context);
+              // Scaffold.of(context).showSnackBar(
+
+
+                // SnackBar(
+                // action: SnackBarAction(
+                //   textColor: Theme.of(context).accentColor,
+                //     label: 'Go To Orders', onPressed: () {
+                //       Navigator.of(context).pushNamed(OrdersScreen.routeName);
+
+                //     },
+                //   ),
+                //     content: Text('Ordered Successfully', textAlign: TextAlign.center,),
+                //     backgroundColor: Theme.of(context).primaryColor,
+                //   ));
               widget.cart.clearCart();
             },
       textColor: Theme.of(context).primaryColor,

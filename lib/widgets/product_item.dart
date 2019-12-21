@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopapp/providers/auth.dart';
@@ -61,22 +62,40 @@ class ProductItem extends StatelessWidget {
               //Forwarding item data to cart screen
               cart.addItem(product.id, product.price, product.title);
               //if snackbar is already open
-              Scaffold.of(context).hideCurrentSnackBar();
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content:
-                  Text('Added item to Cart!', textAlign: TextAlign.center,),
-                  duration: Duration(
-                    seconds: 2
+              Flushbar(
+                  messageText: Text("Added ${product.title} to Cart", style: TextStyle(color: Colors.black),),
+                  mainButton: FlatButton(
+                  onPressed: () {
+                    cart.removeSingleItem(product.id);
+                  },
+                child: Text(
+                    "UNDO", 
+                style: TextStyle(color: Colors.black),
                   ),
-                  action: SnackBarAction(
-                    label: 'UNDO', onPressed: () {
-                      cart.removeSingleItem(product.id);
+                    ),
+                  backgroundColor: Theme.of(context).primaryColor,
 
-                    },
-                  ),
-                  ),
-                  );
+
+                  icon: Icon(Icons.check, color: Colors.black,),
+
+                  duration:  Duration(seconds: 3),              
+                )..show(context);
+              // Scaffold.of(context).hideCurrentSnackBar();
+              // Scaffold.of(context).showSnackBar(
+              //   SnackBar(
+              //     content:
+              //     Text('Added item to Cart!', textAlign: TextAlign.center,),
+              //     duration: Duration(
+              //       seconds: 2
+              //     ),
+              //     action: SnackBarAction(
+              //       label: 'UNDO', onPressed: () {
+              //         cart.removeSingleItem(product.id);
+
+              //       },
+              //     ),
+              //     ),
+              //     );
             },
             color: Theme.of(context).accentColor,
           ),

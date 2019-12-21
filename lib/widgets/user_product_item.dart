@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopapp/providers/product.dart';
@@ -36,10 +37,18 @@ class UserProductItem extends StatelessWidget {
                 await Provider.of<Products>(context, listen: false)
                 .deleteProduct(id);
                 } catch (error) {
-                  scaffold.showSnackBar(SnackBar(
-                    content: Text('Error in deleting, please try again', textAlign: TextAlign.center,),
-                    backgroundColor: Colors.redAccent,
-                  ));
+                  Flushbar(
+                  messageText: Text("Error in deleting, please try again", style: TextStyle(color: Colors.black),),
+                  backgroundColor: Theme.of(context).primaryColor,
+                
+                
+                              
+                )..show(context);
+
+                  // scaffold.showSnackBar(SnackBar(
+                  //   content: Text('Error in deleting, please try again', textAlign: TextAlign.center,),
+                  //   backgroundColor: Colors.redAccent,
+                  // ));
 
                 }
 

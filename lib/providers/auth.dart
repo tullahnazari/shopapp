@@ -64,11 +64,11 @@ class Auth with ChangeNotifier {
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode(
-      {
-      'token': _token,
-      'userId': _userId,
-      'expiryDate': _expiryDate.toIso8601String(),
-      }
+        {
+          'token': _token,
+          'userId': _userId,
+          'expiryDate': _expiryDate.toIso8601String(),
+        },
       );
       prefs.setString('userData', userData);
     } catch (error) {
@@ -85,12 +85,11 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> tryAutoLogin() async {
-
     final prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey('userData')) {
+    if (!prefs.containsKey('userData')) {
       return false;
     }
-    final extractedUserData = json.decode(prefs.getString('userData')) as Map;
+    final extractedUserData = json.decode(prefs.getString('userData')) as Map<String, Object>;
     final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
 
     if (expiryDate.isBefore(DateTime.now())) {
